@@ -11,11 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = ILS
 TEMPLATE = app
 
-#QMAKE_LIBDIR += "C://Qt//QT_PROJECT//ILS//libs"
-
-#LIBS += -lImage
-#LIBS += -lPlot
-
 QMAKE_LFLAGS += "-s -static-libgcc -static-libstdc++ -static"
 QMAKE_CXXFLAGS += "-std=c++11 -std=gnu++11 -s -static-libgcc -static-libstdc++ -static"
 
