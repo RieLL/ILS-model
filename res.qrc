@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/GRM.png</file>
+        <file>res/KRM.png</file>
+        <file>res/Kurs-MP.png</file>
+		<file>res/krm.dat</file>
+		<file>res/grm.dat</file>
+		<file>res/kursMpKrm.dat</file>
+		<file>res/kursMpGrm.dat</file>
+		<file>res/paramPlots.dat</file>
+		<file>res/const.dat</file>
+    </qresource>
+</RCC>
