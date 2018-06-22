@@ -94,23 +94,15 @@ void MainWindow::createScene(QLayout* layout, QVector<PlotManager*>& plotScene,
 {
     Data data(dataFile);
 
-    uint32_t idPlot   = { 0 };
-    uint32_t idFreq   = { 0 };
-    uint32_t cLineH   = { 0 };
-    uint32_t cLineV   = { 0 };
-    uint32_t invelope = { 0 };
-    uint32_t idAxis   = { 0 };
-    QString  namePlot = {};
-
     for (int32_t i = { 0 }; i < data.getData()->length(); i++)
     {
-        idPlot   = { data.getData()->value(i).idPlot };   // ID графика
-        idFreq   = { data.getData()->value(i).idFreq };   // ID частоты (КРМ или ГРМ)
-        cLineH   = { data.getData()->value(i).cLineH };   // Количество линий по горизонтали
-        cLineV   = { data.getData()->value(i).cLineV };   // Количество линий по вертикали
-        invelope = { data.getData()->value(i).invelope }; // Добавить огибающую
-        idAxis   = { data.getData()->value(i).idAxis };   // Добавить ось
-        namePlot = { data.getData()->value(i).namePlot }; // Имя графика
+        uint32_t idPlot   = { data.getData()->value(i).idPlot };   // ID графика
+        uint32_t idFreq   = { data.getData()->value(i).idFreq };   // ID частоты (КРМ или ГРМ)
+        uint32_t cLineH   = { data.getData()->value(i).cLineH };   // Количество линий по горизонтали
+        uint32_t cLineV   = { data.getData()->value(i).cLineV };   // Количество линий по вертикали
+        uint32_t invelope = { data.getData()->value(i).invelope }; // Добавить огибающую
+        uint32_t idAxis   = { data.getData()->value(i).idAxis };   // Добавить ось
+        QString namePlot  = { data.getData()->value(i).namePlot }; // Имя графика
 
         plotScene.append(new PlotManager(parent));
 
@@ -460,7 +452,7 @@ void MainWindow::deleteScene(QVector<PlotManager*>& plotScene)
         delete pm;
     }
 
-    plotScene.erase(plotScene.begin(), plotScene.end());
+    plotScene.clear();
 }
 
 // public slots
