@@ -8,10 +8,10 @@ class Variables
 public:
     Variables();
 
-    QColor getColorGrid() const;
-    QColor getColorAxis() const;
-    QColor getColorFunction() const;
-    QColor getColorInvelope() const;
+    QColor& getColorGrid();
+    QColor& getColorAxis();
+    QColor& getColorFunction();
+    QColor& getColorInvelope();
 
 private:
     QColor colorGrid;

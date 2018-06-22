@@ -1,31 +1,39 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+#include "image/image.h"
+#include "plot/plotmanager.h"
+
+#include "data.h"
+#include "function/function.h"
+
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
-    ui(new Ui::MainWindow),
+MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent)
+    , ui { new Ui::MainWindow }
 
-    krmScheme(new Image(":/res/KRM.png", parent)),
-    grmScheme(new Image(":/res/GRM.png", parent)),
-    kursMpScheme(new Image(":/res/Kurs-MP.png", parent, 1)),
+    , krmScheme    { new Image(":/res/KRM.png", parent) }
+    , grmScheme    { new Image(":/res/GRM.png", parent) }
+    , kursMpScheme { new Image(":/res/Kurs-MP.png", parent, 1) }
 
-    function(new Function(0, 0.01, 9)),
+    , function { new Function(0, 0.01, 9) }
 
-    f90(4.8),
-    f150(8.0),
+    , f90  { 4.8 }
+    , f150 { 8.0 }
 
-    freqKrm(108.0),
-    freqGrm(328.0),
-    pitch(0),
-    bank(0)
+    , freqKrm { 108.0 }
+    , freqGrm { 328.0 }
+    , pitch   { 0 }
+    , bank    { 0 }
 {
     ui->setupUi(this);
 
-    str.append("fн-150");
-    str.append("fн-90");
-    str.append("fн");
-    str.append("fн+90");
-    str.append("fн+150");
+    str.append("fРЅ-150");
+    str.append("fРЅ-90");
+    str.append("fРЅ");
+    str.append("fРЅ+90");
+    str.append("fРЅ+150");
 
     init();
     connectSlots();
@@ -86,23 +94,23 @@ void MainWindow::createScene(QLayout* layout, QVector<PlotManager*>& plotScene,
 {
     Data data(dataFile);
 
-    int idPlot   = 0;
-    int idFreq   = 0;
-    int cLineH   = 0;
-    int cLineV   = 0;
-    int invelope = 0;
-    int idAxis   = 0;
-    QString namePlot = "\0";
+    uint32_t idPlot   = { 0 };
+    uint32_t idFreq   = { 0 };
+    uint32_t cLineH   = { 0 };
+    uint32_t cLineV   = { 0 };
+    uint32_t invelope = { 0 };
+    uint32_t idAxis   = { 0 };
+    QString  namePlot = {};
 
-    for (int i = 0; i < data.line(); ++i)
+    for (int32_t i = { 0 }; i < data.getData()->length(); i++)
     {
-        idPlot   = data.readData(i, 0).toInt();   // ID графика
-        idFreq   = data.readData(i, 1).toInt();   // ID частоты (КРМ или ГРМ)
-        cLineH   = data.readData(i, 2).toInt();   // Количество линий по горизонтали
-        cLineV   = data.readData(i, 3).toInt();   // Количество линий по вертикали
-        invelope = data.readData(i, 4).toInt();   // Добавить огибающую
-        idAxis   = data.readData(i, 5).toInt();   // Добавить ось
-        namePlot = data.readData(i, 6); // Имя графика
+        idPlot   = { data.getData()->value(i).idPlot };   // ID РіСЂР°С„РёРєР°
+        idFreq   = { data.getData()->value(i).idFreq };   // ID С‡Р°СЃС‚РѕС‚С‹ (РљР Рњ РёР»Рё Р“Р Рњ)
+        cLineH   = { data.getData()->value(i).cLineH };   // РљРѕР»РёС‡РµСЃС‚РІРѕ Р»РёРЅРёР№ РїРѕ РіРѕСЂРёР·РѕРЅС‚Р°Р»Рё
+        cLineV   = { data.getData()->value(i).cLineV };   // РљРѕР»РёС‡РµСЃС‚РІРѕ Р»РёРЅРёР№ РїРѕ РІРµСЂС‚РёРєР°Р»Рё
+        invelope = { data.getData()->value(i).invelope }; // Р”РѕР±Р°РІРёС‚СЊ РѕРіРёР±Р°СЋС‰СѓСЋ
+        idAxis   = { data.getData()->value(i).idAxis };   // Р”РѕР±Р°РІРёС‚СЊ РѕСЃСЊ
+        namePlot = { data.getData()->value(i).namePlot }; // РРјСЏ РіСЂР°С„РёРєР°
 
         plotScene.append(new PlotManager(parent));
 
@@ -112,7 +120,7 @@ void MainWindow::createScene(QLayout* layout, QVector<PlotManager*>& plotScene,
         plotScene.last()->addGrid(cLineH, cLineV);
         plotScene.last()->addSignature(namePlot);
 
-        if ((idPlot == 8) || (idPlot == 12))
+        if (idPlot == 8 || idPlot == 12)
         {
             plotScene.last()->addSpectrum();
         }
@@ -121,14 +129,14 @@ void MainWindow::createScene(QLayout* layout, QVector<PlotManager*>& plotScene,
             plotScene.last()->addPlot();
         }
 
-        plotScene.last()->addAxis((Axis::PlotAxis)idAxis);
+        plotScene.last()->addAxis(static_cast<Axis::PlotAxis>(idAxis));
 
         if (i > 0)
         {
             plotScene.last()->setMargin(0, 0, 40, 0);
         }
 
-        if(invelope == 1)
+        if (invelope == 1)
         {
             plotScene.last()->addInvelope();
             plotScene.last()->setInvelopeFlag(1);
@@ -140,58 +148,58 @@ void MainWindow::createScene(QLayout* layout, QVector<PlotManager*>& plotScene,
 
 void MainWindow::updateScene_1(const QVector<PlotManager*>& plotScene)
 {
-    qreal f1 = (10 * freqKrm) - 1065.0;
-    qreal f2 = (10 * freqGrm) - 3260.0;
+    qreal f1 = { 10 * freqKrm - 1065.0 };
+    qreal f2 = { 10 * freqGrm - 3260.0 };
 
-    int id = 0;
-    int invelopeFlag = 0;
+    int id = { 0 };
+    int invelopeFlag = { 0 };
 
     for (PlotManager* pm : plotScene)
     {
-        id = pm->getId();
-        invelopeFlag = pm->getInvelopeFlag();
+        id = { pm->getId() };
+        invelopeFlag = { pm->getInvelopeFlag() };
 
         // IdFreq == 1
         if (pm->getIdFreq() == 1)
         {
-            if (id == 1) // Сигнал на выходе ГВЧ
+            if (id == 1) // РЎРёРіРЅР°Р» РЅР° РІС‹С…РѕРґРµ Р“Р’Р§
             {
-                f = function->functionCos_1(1, f1);
+                f = { function->functionCos_1(1, f1) };
                 pm->setPlot(f);
             }
 
-            if (id == 3) // Сигнал промодулированный частотой "90 Гц"
+            if (id == 3) // РЎРёРіРЅР°Р» РїСЂРѕРјРѕРґСѓР»РёСЂРѕРІР°РЅРЅС‹Р№ С‡Р°СЃС‚РѕС‚РѕР№ "90 Р“С†"
             {
-                f = function->functionCos_3(0.2, f90, 0.0, 0.0, f1);
+                f = { function->functionCos_3(0.2, f90, 0.0, 0.0, f1) };
                 pm->setPlot(f);
 
                 if (invelopeFlag == 1)
                 {
-                    f = function->functionCos_1(0.2, f90, 1);
+                    f = { function->functionCos_1(0.2, f90, 1) };
                     pm->setInvelope(f);
                 }
             }
 
-            if (id == 5) // Сигнал промодулированный частотой "150 Гц"
+            if (id == 5) // РЎРёРіРЅР°Р» РїСЂРѕРјРѕРґСѓР»РёСЂРѕРІР°РЅРЅС‹Р№ С‡Р°СЃС‚РѕС‚РѕР№ "150 Р“С†"
             {
-                f = function->functionCos_3(0.0, 0.0, 0.2, f150, f1);
+                f = { function->functionCos_3(0.0, 0.0, 0.2, f150, f1) };
                 pm->setPlot(f);
 
                 if (invelopeFlag == 1)
                 {
-                    f = function->functionCos_1(0.2, f150, 1);
+                    f = { function->functionCos_1(0.2, f150, 1) };
                     pm->setInvelope(f);
                 }
             }
 
-            if (id == 6) // Сформированный сигнал
+            if (id == 6) // РЎС„РѕСЂРјРёСЂРѕРІР°РЅРЅС‹Р№ СЃРёРіРЅР°Р»
             {
-                f = function->functionCos_3(0.2, f90, 0.2, f150, f1);
+                f = { function->functionCos_3(0.2, f90, 0.2, f150, f1) };
                 pm->setPlot(f);
 
                 if (invelopeFlag == 1)
                 {
-                    f = function->functionCos_2(0.2, f90, 0.2, f150, 1);
+                    f = { function->functionCos_2(0.2, f90, 0.2, f150, 1) };
                     pm->setInvelope(f);
                 }
             }
@@ -214,44 +222,44 @@ void MainWindow::updateScene_1(const QVector<PlotManager*>& plotScene)
         // IdFreq == 2
         if (pm->getIdFreq() == 2)
         {
-            if (id == 1) // Сигнал на выходе ГВЧ
+            if (id == 1) // РЎРёРіРЅР°Р» РЅР° РІС‹С…РѕРґРµ Р“Р’Р§
             {
-                f = function->functionCos_1(1, f2);
+                f = { function->functionCos_1(1, f2) };
                 pm->setPlot(f);
             }
 
-            if (id == 3) // Сигнал промодулированный частотой "90 Гц"
+            if (id == 3) // РЎРёРіРЅР°Р» РїСЂРѕРјРѕРґСѓР»РёСЂРѕРІР°РЅРЅС‹Р№ С‡Р°СЃС‚РѕС‚РѕР№ "90 Р“С†"
             {
-                f = function->functionCos_3(0.2, f90, 0.0, 0.0, f2);
+                f = { function->functionCos_3(0.2, f90, 0.0, 0.0, f2) };
                 pm->setPlot(f);
 
                 if (invelopeFlag == 1)
                 {
-                    f = function->functionCos_1(0.2, f90, 1);
+                    f = { function->functionCos_1(0.2, f90, 1) };
                     pm->setInvelope(f);
                 }
             }
 
-            if (id == 5) // Сигнал промодулированный частотой "150 Гц"
+            if (id == 5) // РЎРёРіРЅР°Р» РїСЂРѕРјРѕРґСѓР»РёСЂРѕРІР°РЅРЅС‹Р№ С‡Р°СЃС‚РѕС‚РѕР№ "150 Р“С†"
             {
-                f = function->functionCos_3(0.0, 0.0, 0.2, f150, f2);
+                f = { function->functionCos_3(0.0, 0.0, 0.2, f150, f2) };
                 pm->setPlot(f);
 
                 if (invelopeFlag == 1)
                 {
-                    f = function->functionCos_1(0.2, f150, 1);
+                    f = { function->functionCos_1(0.2, f150, 1) };
                     pm->setInvelope(f);
                 }
             }
 
-            if (id == 6) // Сформированный сигнал
+            if (id == 6) // РЎС„РѕСЂРјРёСЂРѕРІР°РЅРЅС‹Р№ СЃРёРіРЅР°Р»
             {
-                f = function->functionCos_3(0.2, f90, 0.2, f150, f2);
+                f = { function->functionCos_3(0.2, f90, 0.2, f150, f2) };
                 pm->setPlot(f);
 
                 if (invelopeFlag == 1)
                 {
-                    f = function->functionCos_2(0.2, f90, 0.2, f150, 1);
+                    f = { function->functionCos_2(0.2, f90, 0.2, f150, 1) };
                     pm->setInvelope(f);
                 }
             }
@@ -264,7 +272,7 @@ void MainWindow::updateScene_1(const QVector<PlotManager*>& plotScene)
                     point.clear();
 
                     strAxis.append(QString::number(freqGrm, 'f', 2));
-                    strAxis.append("МГц");
+                    strAxis.append("РњР“С†");
                     point.append(5);
                     point.append(11);
 
@@ -273,15 +281,15 @@ void MainWindow::updateScene_1(const QVector<PlotManager*>& plotScene)
             }
         }
 
-        if (id == 2) // Модулирующее колебание "90 Гц"
+        if (id == 2) // РњРѕРґСѓР»РёСЂСѓСЋС‰РµРµ РєРѕР»РµР±Р°РЅРёРµ "90 Р“С†"
         {
-            f = function->functionCos_1(1, f90);
+            f = { function->functionCos_1(1, f90) };
             pm->setPlot(f);
         }
 
-        if (id == 4) // Модулирующее колебание "150 Гц"
+        if (id == 4) // РњРѕРґСѓР»РёСЂСѓСЋС‰РµРµ РєРѕР»РµР±Р°РЅРёРµ "150 Р“С†"
         {
-            f = function->functionCos_1(1, f150);
+            f = { function->functionCos_1(1, f150) };
             pm->setPlot(f);
         }
 
@@ -301,59 +309,59 @@ void MainWindow::updateScene_1(const QVector<PlotManager*>& plotScene)
 
 void MainWindow::updateScene_2(const QVector<PlotManager*>& plotScene)
 {
-    qreal f1 = (10.0 * freqKrm) - 1065.0;
-    qreal f2 = (10.0 * freqGrm) - 3260.0;
+    qreal f1 = { 10.0 * freqKrm - 1065.0 };
+    qreal f2 = { 10.0 * freqGrm - 3260.0 };
 
-    qreal k_bank  = (bank / 15.0) * 0.2;
-    qreal k_pitch = (pitch / 8.0) * 0.2;
+    qreal k_bank  = { (bank / 15.0) * 0.2 };
+    qreal k_pitch = { (pitch / 8.0) * 0.2 };
 
-    int id = 0;
-    int invelopeFlag = 0;
+    int id = { 0 };
+    int invelopeFlag = { 0 };
 
     kursMpScheme->lineConsider(bank, pitch);
 
     for (PlotManager* pm : plotScene)
     {        
-        id = pm->getId();
-        invelopeFlag = pm->getInvelopeFlag();
+        id = { pm->getId() };
+        invelopeFlag = { pm->getInvelopeFlag() };
 
         if (pm->getIdFreq() == 1)
         {
-            if (id == 7) // Сигнал на входе антенны приемника ILS
+            if (id == 7) // РЎРёРіРЅР°Р» РЅР° РІС…РѕРґРµ Р°РЅС‚РµРЅРЅС‹ РїСЂРёРµРјРЅРёРєР° ILS
             {
-                f = function->functionCos_3(0.2 - k_bank, f90, 0.2 + k_bank, f150, f1);
+                f = { function->functionCos_3(0.2 - k_bank, f90, 0.2 + k_bank, f150, f1) };
                 pm->setPlot(f);
 
                 if (invelopeFlag == 1)
                 {
-                    f = function->functionCos_2(0.2 - k_bank, f90, 0.2 + k_bank, f150, 1);
+                    f = { function->functionCos_2(0.2 - k_bank, f90, 0.2 + k_bank, f150, 1) };
                     pm->setInvelope(f);
                 }
             }
 
-            if (id == 9) // Сигнал на выходе амплитудного детектора
+            if (id == 9) // РЎРёРіРЅР°Р» РЅР° РІС‹С…РѕРґРµ Р°РјРїР»РёС‚СѓРґРЅРѕРіРѕ РґРµС‚РµРєС‚РѕСЂР°
             {
-                f = function->functionCos_2(0.2 - k_bank, f90, 0.2 + k_bank, f150, 0, 2.5);
+                f = { function->functionCos_2(0.2 - k_bank, f90, 0.2 + k_bank, f150, 0, 2.5) };
                 pm->setPlot(f);
             }
 
-            if (id == 10) // Колебание на выходе фильтра "90 Гц"
+            if (id == 10) // РљРѕР»РµР±Р°РЅРёРµ РЅР° РІС‹С…РѕРґРµ С„РёР»СЊС‚СЂР° "90 Р“С†"
             {
-                f = function->functionCos_1(0.2 - k_bank, f90, 0, 2.5);
+                f = { function->functionCos_1(0.2 - k_bank, f90, 0, 2.5) };
                 pm->setPlot(f);
             }
 
-            if (id == 11) // Колебание на выходе фильтра "150 Гц"
+            if (id == 11) // РљРѕР»РµР±Р°РЅРёРµ РЅР° РІС‹С…РѕРґРµ С„РёР»СЊС‚СЂР° "150 Р“С†"
             {
-                f = function->functionCos_1(0.2 + k_bank, f150, 0, 2.5);
+                f = { function->functionCos_1(0.2 + k_bank, f150, 0, 2.5) };
                 pm->setPlot(f);
             }
 
-            if (id == 12) // Спектр принимаемого сигнала
+            if (id == 12) // РЎРїРµРєС‚СЂ РїСЂРёРЅРёРјР°РµРјРѕРіРѕ СЃРёРіРЅР°Р»Р°
             {
-                qreal k     = (bank / 15.0) * 2;
-                qreal h_90  = 3 - k;
-                qreal h_150 = 3 + k;
+                qreal k     = { (bank / 15.0) * 2.0 };
+                qreal h_90  = { 3.0 - k };
+                qreal h_150 = { 3.0 + k };
 
                 f.clear();
                 f.append(QPointF(1, h_150));
@@ -372,7 +380,7 @@ void MainWindow::updateScene_2(const QVector<PlotManager*>& plotScene)
                     strAxis.append(QString::number(freqKrm, 'f', 2));
                     point.append(5);
 
-                    strAxis.append("МГц");
+                    strAxis.append("РњР“С†");
                     point.append(11);
 
                     pm->setSignatureAxis(point, strAxis);
@@ -382,41 +390,41 @@ void MainWindow::updateScene_2(const QVector<PlotManager*>& plotScene)
 
         if (pm->getIdFreq() == 2)
         {
-            if (id == 7) // Сигнал на входе антенны приемника ILS
+            if (id == 7) // РЎРёРіРЅР°Р» РЅР° РІС…РѕРґРµ Р°РЅС‚РµРЅРЅС‹ РїСЂРёРµРјРЅРёРєР° ILS
             {
-                f = function->functionCos_3(0.2 + k_pitch, f90, 0.2 - k_pitch, f150, f2);
+                f = { function->functionCos_3(0.2 + k_pitch, f90, 0.2 - k_pitch, f150, f2) };
                 pm->setPlot(f);
 
                 if (invelopeFlag == 1)
                 {
-                    f = function->functionCos_2(0.2 + k_pitch, f90, 0.2 - k_pitch, f150, 1);
+                    f = { function->functionCos_2(0.2 + k_pitch, f90, 0.2 - k_pitch, f150, 1) };
                     pm->setInvelope(f);
                 }
             }
 
-            if (id == 9) // Сигнал на выходе амплитудного детектора
+            if (id == 9) // РЎРёРіРЅР°Р» РЅР° РІС‹С…РѕРґРµ Р°РјРїР»РёС‚СѓРґРЅРѕРіРѕ РґРµС‚РµРєС‚РѕСЂР°
             {
-                f = function->functionCos_2(0.2 + k_pitch, f90, 0.2 - k_pitch, f150, 0, 2.5);
+                f = { function->functionCos_2(0.2 + k_pitch, f90, 0.2 - k_pitch, f150, 0, 2.5) };
                 pm->setPlot(f);
             }
 
-            if (id == 10) // Колебание на выходе фильтра "90 Гц"
+            if (id == 10) // РљРѕР»РµР±Р°РЅРёРµ РЅР° РІС‹С…РѕРґРµ С„РёР»СЊС‚СЂР° "90 Р“С†"
             {
-                f = function->functionCos_1(0.2 + k_pitch, f90, 0, 2.5);
+                f = { function->functionCos_1(0.2 + k_pitch, f90, 0, 2.5) };
                 pm->setPlot(f);
             }
 
-            if (id == 11) // Колебание на выходе фильтра "150 Гц"
+            if (id == 11) // РљРѕР»РµР±Р°РЅРёРµ РЅР° РІС‹С…РѕРґРµ С„РёР»СЊС‚СЂР° "150 Р“С†"
             {
-                f = function->functionCos_1(0.2 - k_pitch, f150, 0, 2.5);
+                f = { function->functionCos_1(0.2 - k_pitch, f150, 0, 2.5) };
                 pm->setPlot(f);
             }
 
-            if (id == 12) // Спектр принимаемого сигнала
+            if (id == 12) // РЎРїРµРєС‚СЂ РїСЂРёРЅРёРјР°РµРјРѕРіРѕ СЃРёРіРЅР°Р»Р°
             {
-                qreal k     = (pitch / 8.0) * 2;
-                qreal h_90  = 3 + k;
-                qreal h_150 = 3 - k;
+                qreal k     = { (pitch / 8.0) * 2.0 };
+                qreal h_90  = { 3.0 + k };
+                qreal h_150 = { 3.0 - k };
 
                 f.clear();
                 f.append(QPointF(1, h_150));
@@ -435,7 +443,7 @@ void MainWindow::updateScene_2(const QVector<PlotManager*>& plotScene)
                     strAxis.append(QString::number(freqGrm, 'f', 2));
                     point.append(5);
 
-                    strAxis.append("МГц");
+                    strAxis.append("РњР“С†");
                     point.append(11);
 
                     pm->setSignatureAxis(point, strAxis);
@@ -458,27 +466,27 @@ void MainWindow::deleteScene(QVector<PlotManager*>& plotScene)
 // public slots
 void MainWindow::setFreqKrm(double freqKrm)
 {
-    this->freqKrm = freqKrm;
+    this->freqKrm = { freqKrm };
     updateScene_1(krmScene);
     updateScene_2(kursMpKrmScene);
 }
 
 void MainWindow::setFreqGrm(double freqGrm)
 {
-    this->freqGrm = freqGrm;
+    this->freqGrm = { freqGrm };
     updateScene_1(grmScene);
     updateScene_2(kursMpGrmScene);
 }
 
 void MainWindow::setPitch(int pitch)
 {
-    this->pitch = pitch;
+    this->pitch = { pitch };
     updateScene_2(kursMpGrmScene);
 }
 
 void MainWindow::setBank(int bank)
 {
-    this->bank = bank;
+    this->bank = { bank };
     updateScene_2(kursMpKrmScene);
 }
 // end public slots

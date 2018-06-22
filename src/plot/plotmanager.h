@@ -23,14 +23,14 @@ public:
     explicit PlotManager(QWidget* parent = 0);
     virtual ~PlotManager();
 
-    void setId(const int id);
+    void setId(int id);
     int  getId() const;
-    void setIdFreq(const int idFreq);
+    void setIdFreq(int idFreq);
     int  getIdFreq() const;
-    void setInvelopeFlag(const int invelopeFlag);
+    void setInvelopeFlag(int invelopeFlag);
     int  getInvelopeFlag() const;
 
-    void addAxis(const Axis::PlotAxis axis);
+    void addAxis(Axis::PlotAxis axis);
     int  getIdAxis() const;
     void setSignatureAxis(const QVector<qreal>& point, const QVector<QString>& str);
     void addGrid(const int countHLine, const int countVLine);

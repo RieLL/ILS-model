@@ -1,9 +1,7 @@
 #include "spectrum.h"
 
-
-
 Spectrum::Spectrum(const QColor color)
-    : Plot(color)
+    : Plot ( color )
 {
     //
 }
@@ -15,55 +13,57 @@ Spectrum::~Spectrum()
 
 void Spectrum::drawElement(QPainter* painter)
 {
-    QTextCodec* codec = QTextCodec::codecForName("Windows-1251");
+    qreal x1 = { 0.0 };
+    qreal y1 = { 0.0 };
+    qreal y2 = { 0.0 };
 
-    qreal x1 = 0.0;
-    qreal y1 = 0.0;
-    qreal y2 = 0.0;
+    qreal x = { 0.0 };
+    qreal y = { 0.0 };
+    qreal w = { 0.0 };
+    qreal h = { 0.0 };
 
-    qreal x = 0.0;
-    qreal y = 0.0;
-    qreal w = 0.0;
-    qreal h = 0.0;
+    qreal sizeX = { 70.0 };
+    qreal sizeY = { 24.0 };
 
-    qreal sizeX = 70.0;
-    qreal sizeY = 24.0;
+    qreal sizeFont = { 11.0 * (width / 500.0) };
 
-    qreal sizeFont = 11.0 * (width / 500.0);
-
-    for (int i = 0; i < plotPoints.size(); ++i)
+    for (int i = { 0 }; i < plotPoints.size(); ++i)
     {
         painter->setPen(QPen(color, 3, Qt::SolidLine));
         painter->setRenderHint(QPainter::Antialiasing, false);
 
-        x1 = posX + (plotPoints.at(i).x() * scaleX);
-        y1 = posY + (((countHLines - 1) - plotPoints.at(i).y()) * scaleY);
-        y2 = posY + height - 2;
+        x1 = { static_cast<qreal>(posX + plotPoints.at(i).x() * scaleX) };
+        y1 = { static_cast<qreal>(posY + (countHLines - 1.0 - plotPoints.at(i).y()) * scaleY) };
+        y2 = { static_cast<qreal>(posY + height - 2.0) };
 
         painter->drawLine(x1, y1, x1, y2);
 
-        // Ã‡ÎÂÌ¸ÍËÂ ˜ÂÚÓ˜ÍË
-        painter->drawLine(x1 - 5, y1 - 1, x1 + 5, y1 - 1);
+        // –ú–∞–ª–µ–Ω—å–∫–∏–µ —á–µ—Ä—Ç–æ—á–∫–∏
+        painter->drawLine(x1 - 5.0, y1 - 1.0, x1 + 5.0, y1 - 1.0);
 
-        // Õ‡‰ÔËÒË
-        x = x1 - (sizeX * 0.5);
-        y = y1 - sizeY;
-        w = sizeX;
-        h = sizeY;
+        // –ù–∞–¥–ø–∏—Å–∏
+        x = { x1 - sizeX * 0.5 };
+        y = { y1 - sizeY };
+        w = { sizeX };
+        h = { sizeY };
 
         QRectF rect(x, y, w, h);
 
-        if (sizeFont < 11)
-            sizeFont = 11;
+        if (sizeFont < 11.0)
+        {
+            sizeFont = { 11.0 };
+        }
 
-        if (sizeFont > 14)
-            sizeFont = 14;
+        if (sizeFont > 14.0)
+        {
+            sizeFont = { 14.0 };
+        }
 
         QFont font("", sizeFont, 1, false);
 
         painter->setPen(QPen(QColor(0, 0, 0, 255), 1, Qt::SolidLine));
         painter->setFont(font);
 
-        painter->drawText(rect, Qt::AlignCenter, codec->toUnicode(str.at(i).toLatin1()));
+        painter->drawText(rect, Qt::AlignCenter, Plot::str.at(i));
     }
 }

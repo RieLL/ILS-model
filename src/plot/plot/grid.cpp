@@ -1,10 +1,11 @@
 #include "grid.h"
+#include "variables.h"
 
 Grid::Grid()
     : Window()
     , Scale()
     , Hairstroke()
-    , var(new Variables)
+    , var { new Variables }
 {
     //
 }
@@ -23,7 +24,7 @@ void Grid::drawGrid(QPainter* painter)
 {
     painter->setPen(QPen(var->getColorGrid(), 1, Qt::DotLine));
     painter->setRenderHint(QPainter::Antialiasing, false);
-    painter->drawRect(posX, posY, width, height);
+    painter->drawRect(Window::posX, Window::posY, Window::width, Window::height);
 
     addHGrid(painter);
     addVGrid(painter);
@@ -31,13 +32,13 @@ void Grid::drawGrid(QPainter* painter)
 
 void Grid::addHGrid(QPainter* painter)
 {
-    qreal x1 = posX;
-    qreal x2 = width + x1;
-    qreal y = 0.0;
+    qreal x1 = { static_cast<qreal>(Window::posX) };
+    qreal x2 = { Window::width + x1 };
+    qreal y  = { 0.0 };
 
-    for (int i = 1; i < (countHLines - 1); ++i)
+    for (int i = 1; i < (Hairstroke::countHLines - 1); ++i)
     {
-        y = (i * scaleY) + posY;
+        y = { i * Scale::scaleY + Window::posY };
 
         painter->drawLine(QLineF(x1, y, x2, y));
     }
@@ -45,13 +46,13 @@ void Grid::addHGrid(QPainter* painter)
 
 void Grid::addVGrid(QPainter* painter)
 {
-    qreal x = 0.0;
-    qreal y1 = posY;
-    qreal y2 = height + y1;
+    qreal x  = { 0.0 };
+    qreal y1 = { static_cast<qreal>(Window::posY) };
+    qreal y2 = { Window::height + y1 };
 
-    for (int i = 1; i < (countVLines - 1); ++i)
+    for (int i = 1; i < (Hairstroke::countVLines - 1); ++i)
     {
-        x = (i * scaleX) + posX;
+        x = { i * Scale::scaleX + Window::posX };
 
         painter->drawLine(QLineF(x, y1, x, y2));
     }

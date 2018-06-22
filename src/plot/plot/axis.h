@@ -9,7 +9,7 @@
 #include "virtual/scale.h"
 #include "virtual/hairstroke.h"
 
-#include "variables.h"
+class Variables;
 
 class Axis : public Window, public Scale, public Hairstroke
 {

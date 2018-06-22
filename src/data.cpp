@@ -1,83 +1,76 @@
 #include "data.h"
+#include <QFile>
+#include <QList>
 
 class DataImpl
 {
 public:
-    DataImpl();
+    explicit DataImpl();
+    explicit DataImpl(QString& fileName);
     ~DataImpl();
-    void fOpen(QString fileName);
+    void fOpen(QString& fileName);
 
-    QList<QString> fileArray;
-    int line;
-    int column;
+    QList<SData> m_SData;
 };
 
 DataImpl::DataImpl()
-    : line {0}
-    , column {0}
 {
     //
 }
 
+DataImpl::DataImpl(QString& fileName)
+    : DataImpl ()
+{
+    this->fOpen(fileName);
+}
+
 DataImpl::~DataImpl()
 {
-    fileArray.clear();
+    //
 }
 
-void DataImpl::fOpen(QString fileName)
+void DataImpl::fOpen(QString& fileName)
 {
-    QFile* file = new QFile(fileName);
-    file->open(QIODevice::ReadOnly);
+    QFile* pFile = { new QFile(fileName) };
+    pFile->open(QIODevice::ReadOnly);
 
-    QByteArray fileRead;
-    fileRead.append(file->readAll());
-
-    file->close();
-    delete file;
-
-    line = fileRead.split('\n').length();
-    column = (fileRead.split('@').length() / line) + 1;
-
-    QList<QByteArray> arrayLine;
-    arrayLine.append(fileRead.split('\n'));
-
-    for (int i = 0; i < line; i++)
+    while ( !pFile->atEnd() )
     {
-        QList<QByteArray> arrayColumn;
-        arrayColumn.append(arrayLine.value(i).split('@'));
+        SData tmpSData = {};
+        QByteArray fileRead = { pFile->readLine() };
+        QList<QByteArray> array( fileRead.split('@') );
 
-        for (int j = 0; j < column; j++)
-        {
-            fileArray.append(arrayColumn.value(j));
-        }
+        tmpSData.idPlot   = { array.value(0).toUInt() };
+        tmpSData.idFreq   = { array.value(1).toUInt() };
+        tmpSData.cLineH   = { array.value(2).toUInt() };
+        tmpSData.cLineV   = { array.value(3).toUInt() };
+        tmpSData.invelope = { array.value(4).toUInt() };
+        tmpSData.idAxis   = { array.value(5).toUInt() };
+        tmpSData.namePlot = { array.value(6) };
+
+        m_SData.append(tmpSData);
+
+        array.clear();
     }
+
+    pFile->close();
+    delete pFile;
 }
 
 
 
-Data::Data(QString fileName)
-    : dataImpl {new DataImpl}
+Data::Data(QString& fileName)
+    : m_pDataImpl { new DataImpl(fileName) }
 {
-    dataImpl->fOpen(fileName);
+    //
 }
 
 Data::~Data()
 {
-    delete dataImpl;
+    delete m_pDataImpl;
 }
 
-QString Data::readData(const int line, const int column) const
+QList<SData>* Data::getData() const
 {
-    int element = (line * dataImpl->column) + column;
-    return(dataImpl->fileArray.value(element));
-}
-
-int Data::line() const
-{
-    return dataImpl->line;
-}
-
-int Data::column() const
-{
-    return dataImpl->column;
+    return { &(m_pDataImpl->m_SData) };
 }

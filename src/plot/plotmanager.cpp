@@ -3,27 +3,27 @@
 #include <QDebug>
 
 PlotManager::PlotManager(QWidget* parent)
-    : QWidget(parent)
-    , countHLines(0)
-    , countVLines(0)
+    : QWidget ( parent )
+    , countHLines { 0 }
+    , countVLines { 0 }
 
-    , idPlot(0)
-    , idFreq(0)
-    , invelopeFlag(0)
-    , idAxis(0)
+    , idPlot       { 0 }
+    , idFreq       { 0 }
+    , invelopeFlag { 0 }
+    , idAxis       { 0 }
 
-    , marginTop(0)
-    , marginButtom(0)
-    , marginLeft(0)
-    , marginRight(0)
+    , marginTop    { 0 }
+    , marginButtom { 0 }
+    , marginLeft   { 0 }
+    , marginRight  { 0 }
 
-    , axisX(nullptr)
-    , axisY(nullptr)
-    , grid(nullptr)
-    , signature(nullptr)
+    , axisX     { nullptr }
+    , axisY     { nullptr }
+    , grid      { nullptr }
+    , signature { nullptr }
 
-    , colorFunction(48, 165, 255, 255)
-    , colorInvelope(255, 114, 243, 255)
+    , colorFunction ( 48, 165, 255, 255)
+    , colorInvelope (255, 114, 243, 255)
 {
     //
 }
@@ -43,41 +43,41 @@ PlotManager::~PlotManager()
     plots.erase(plots.begin(), plots.end());
 }
 
-void PlotManager::setId(const int id)
+void PlotManager::setId(int id)
 {
-    this->idPlot = id;
+    this->idPlot = { id };
 }
 
-int  PlotManager::getId() const
+int PlotManager::getId() const
 {
-    return this->idPlot;
+    return { this->idPlot };
 }
 
-void PlotManager::setIdFreq(const int idFreq)
+void PlotManager::setIdFreq(int idFreq)
 {
-    this->idFreq = idFreq;
+    this->idFreq = { idFreq };
 }
 
-int  PlotManager::getIdFreq() const
+int PlotManager::getIdFreq() const
 {
-    return this->idFreq;
+    return { this->idFreq };
 }
 
-void PlotManager::setInvelopeFlag(const int invelopeFlag)
+void PlotManager::setInvelopeFlag(int invelopeFlag)
 {
-    this->invelopeFlag = invelopeFlag;
+    this->invelopeFlag = { invelopeFlag };
 }
 
-int  PlotManager::getInvelopeFlag() const
+int PlotManager::getInvelopeFlag() const
 {
-    return this->invelopeFlag;
+    return { this->invelopeFlag };
 }
 
-void PlotManager::addAxis(const Axis::PlotAxis axis)
+void PlotManager::addAxis(Axis::PlotAxis axis)
 {
     if (axis == Axis::Off)
     {
-        idAxis = 0;
+        idAxis = { 0 };
 
         if (axisX) { delete axisX; }
         if (axisY) { delete axisY; }
@@ -85,39 +85,39 @@ void PlotManager::addAxis(const Axis::PlotAxis axis)
 
     if (axis == Axis::X)
     {
-        idAxis = 1;
+        idAxis = { 1 };
 
         if (!axisX)
         {
-            axisX = new Axis();
+            axisX = { new Axis() };
             axisX->setAxis(Axis::X);
         }
     }
 
     if (axis == Axis::Y)
     {
-        idAxis = 1;
+        idAxis = { 1 };
 
         if (!axisY)
         {
-            axisY = new Axis();
+            axisY = { new Axis() };
             axisY->setAxis(Axis::Y);
         }
    }
 
     if(axis == Axis::All)
     {
-        idAxis = 1;
+        idAxis = { 1 };
 
         if (!axisX)
         {
-            axisX = new Axis();
+            axisX = { new Axis() };
             axisX->setAxis(Axis::X);
         }
 
         if (!axisY)
         {
-            axisY = new Axis();
+            axisY = { new Axis() };
             axisY->setAxis(Axis::Y);
         }
     }
@@ -125,7 +125,7 @@ void PlotManager::addAxis(const Axis::PlotAxis axis)
 
 int PlotManager::getIdAxis() const
 {
-    return this->idAxis;
+    return { this->idAxis };
 }
 
 void PlotManager::setSignatureAxis(const QVector<qreal>& point, const QVector<QString>& str)
@@ -140,14 +140,17 @@ void PlotManager::setSignatureAxis(const QVector<qreal>& point, const QVector<QS
 void PlotManager::addGrid(const int countHLine, const int countVLine)
 {
     setCountLines(countHLine, countVLine);
-    if (!grid) { grid = new Grid(); }
+    if (!grid)
+    {
+        grid = { new Grid() };
+    }
 }
 
 void PlotManager::addSignature(const QString str)
 {
     if (!signature)
     {
-        signature = new Signature();
+        signature = { new Signature() };
         signature->setText(str);
     }
     else
@@ -158,7 +161,7 @@ void PlotManager::addSignature(const QString str)
 
 void PlotManager::addPlot()
 {
-    plots.append(new Dots(colorFunction));
+    plots.append( new Dots(colorFunction) );
 }
 
 void PlotManager::setPlot(const QVector<QPointF>& plotPoints)
@@ -169,8 +172,8 @@ void PlotManager::setPlot(const QVector<QPointF>& plotPoints)
 
 void PlotManager::addInvelope()
 {
-    plots.append(new Dots(colorInvelope));
-    plots.append(new Dots(colorInvelope));
+    plots.append( new Dots(colorInvelope) );
+    plots.append( new Dots(colorInvelope) );
 }
 
 void PlotManager::setInvelope(const QVector<QPointF>& invelopePoints)
@@ -179,7 +182,7 @@ void PlotManager::setInvelope(const QVector<QPointF>& invelopePoints)
 
     for(QPointF i : invelopePoints)
     {
-        point.append(QPointF(i.x(), i.y() * (-1)));
+        point.append( QPointF(i.x(), i.y() * (-1)) );
     }
 
     plots.at(1)->setPlot(invelopePoints);
@@ -190,7 +193,7 @@ void PlotManager::setInvelope(const QVector<QPointF>& invelopePoints)
 
 void PlotManager::addSpectrum()
 {
-    plots.append(new Spectrum(colorFunction));
+    plots.append( new Spectrum(colorFunction) );
 }
 
 void PlotManager::setSpectrum(const QVector<QPointF>& spectrumPoints, const QVector<QString>& str)
@@ -202,17 +205,17 @@ void PlotManager::setSpectrum(const QVector<QPointF>& spectrumPoints, const QVec
 
 void PlotManager::setMargin(const int left, const int right, const int top, const int buttom)
 {
-    this->marginLeft   = left;
-    this->marginRight  = right;
-    this->marginTop    = top;
-    this->marginButtom = buttom;
+    this->marginLeft   = { left };
+    this->marginRight  = { right };
+    this->marginTop    = { top };
+    this->marginButtom = { buttom };
     update();
 }
 
 void PlotManager::setCountLines(const int countHLines, const int countVLines)
 {
-    this->countHLines = countHLines;
-    this->countVLines = countVLines;
+    this->countHLines = { countHLines };
+    this->countVLines = { countVLines };
 }
 
 void PlotManager::paintEvent(QPaintEvent*)
@@ -234,36 +237,36 @@ void PlotManager::paintEvent(QPaintEvent*)
 
 void PlotManager::resizeEvent(QResizeEvent* event)
 {
-    setFixedHeight((0.5 * (width() - 1)) + (marginTop + marginButtom));
+    setFixedHeight( 0.5 * (width() - 1) + marginTop + marginButtom );
 
     consider();
 }
 
 void PlotManager::consider()
 {
-    qreal scaleX = 0;
-    qreal scaleY = 0;
+    qreal scaleX = { 0.0 };
+    qreal scaleY = { 0.0 };
 
-    int smallAxisSizeX = 30;
-    int smallAxisSizeY = 5;
-    int smallSignatureSize = 40;
-    int margin = 5;
+    int smallAxisSizeX     = { 30 };
+    int smallAxisSizeY     = { 5 };
+    int smallSignatureSize = { 40 };
+    int margin             = { 5 };
 
-    qreal x = 0;
-    qreal y = 0;
-    qreal w = 0;
-    qreal h = 0;
+    qreal x = { 0 };
+    qreal y = { 0 };
+    qreal w = { 0 };
+    qreal h = { 0 };
 
-    if (!axisX) { smallAxisSizeX = 0; }
+    if (!axisX) { smallAxisSizeX = { 0 }; }
 
-    if (!axisY) { smallAxisSizeY = 0; }
+    if (!axisY) { smallAxisSizeY = { 0 }; }
 
     if (signature)
     {
-        x = smallAxisSizeY + margin + marginLeft;
-        y = marginTop + margin;
-        w = width() - x - margin - marginRight;
-        h = smallSignatureSize;
+        x = { static_cast<qreal>(smallAxisSizeY + margin + marginLeft) };
+        y = { static_cast<qreal>(marginTop + margin) };
+        w = { static_cast<qreal>(width() - x - margin - marginRight) };
+        h = { static_cast<qreal>(smallSignatureSize) };
 
         signature->setPos(x, y);
         signature->setSize(w, h);
@@ -272,22 +275,22 @@ void PlotManager::consider()
     }
     else
     {
-        smallSignatureSize = marginTop;
+        smallSignatureSize = { marginTop };
     }
 
     // consider scale
     if (width() > 0)
     {
-        w = width() - (smallAxisSizeY + margin) - (marginLeft + marginRight);
+        w ={ static_cast<qreal>(width() - (smallAxisSizeY + margin) - (marginLeft + marginRight)) };
 
         if (countVLines <= 1)
         {
-            countVLines = 2;
-            scaleX = w;
+            countVLines = { 2 };
+            scaleX = { w };
         }
         else
         {
-            scaleX = w / (countVLines - 1);
+            scaleX = { w / (countVLines - 1) };
         }
     }
 
@@ -297,21 +300,21 @@ void PlotManager::consider()
 
         if (countHLines <= 1)
         {
-            countHLines = 2;
-            scaleY = h;
+            countHLines = { 2 };
+            scaleY = { h };
         }
         else
         {
-            scaleY = h / (countHLines - 1);
+            scaleY = { h / (countHLines - 1) };
         }
     }
 
     if (axisX)
     {
-        x = smallAxisSizeY + margin + marginLeft;
-        y = height() - smallAxisSizeX - marginButtom;
-        w = width() - margin - marginRight;
-        h = smallAxisSizeX;
+        x = { static_cast<qreal>(smallAxisSizeY + margin + marginLeft) };
+        y = { static_cast<qreal>(height() - smallAxisSizeX - marginButtom) };
+        w = { static_cast<qreal>(width() - margin - marginRight) };
+        h = { static_cast<qreal>(smallAxisSizeX) };
 
         axisX->setCountLines(countHLines, countVLines);
         axisX->setPos(x, y);
@@ -321,10 +324,10 @@ void PlotManager::consider()
 
     if (axisY)
     {
-        x = marginLeft;
-        y = smallSignatureSize + margin;
-        w = smallAxisSizeY;
-        h = height() - smallAxisSizeX - margin - marginButtom;
+        x = { static_cast<qreal>(marginLeft) };
+        y = { static_cast<qreal>(smallSignatureSize + margin) };
+        w = { static_cast<qreal>(smallAxisSizeY) };
+        h = { static_cast<qreal>(height() - smallAxisSizeX - margin - marginButtom) };
 
         axisY->setCountLines(countHLines, countVLines);
         axisY->setPos(x, y);
@@ -334,10 +337,10 @@ void PlotManager::consider()
 
     if (grid)
     {
-        x = marginLeft + smallAxisSizeY + margin;
-        y = smallSignatureSize + margin;
-        w = width() - x - margin - marginRight;
-        h = height() - y - margin - smallAxisSizeX - marginButtom;
+        x = { static_cast<qreal>(marginLeft + smallAxisSizeY + margin) };
+        y = { static_cast<qreal>(smallSignatureSize + margin) };
+        w = { static_cast<qreal>(width() - x - margin - marginRight) };
+        h = { static_cast<qreal>(height() - y - margin - smallAxisSizeX - marginButtom) };
 
 
         grid->setCountLines(countHLines, countVLines);
@@ -346,10 +349,10 @@ void PlotManager::consider()
         grid->setScale(scaleX, scaleY);
     }
 
-    for(Plot *plot : plots)
+    for(Plot* plot : plots)
     {
-        x = grid->getPosX();
-        y = grid->getPosY() + 1;
+        x = { static_cast<qreal>(grid->getPosX()) };
+        y = { static_cast<qreal>(grid->getPosY() + 1) };
 
         plot->setCountLines(countHLines, countVLines);
         plot->setPos(x, y);

@@ -1,8 +1,7 @@
 #ifndef SIGNATURE_H
 #define SIGNATURE_H
 
-#include <QByteArray>
-#include <QTextCodec>
+#include <QString>
 #include "virtual/window.h"
 #include "virtual/mainparameters.h"
 
@@ -13,10 +12,10 @@ public:
     virtual ~Signature();
 
     void drawElement(QPainter* painter) override;
-    void setText(const QString str);
+    void setText(const QString& str);
 
 private:
-    QByteArray str;
+    QString str;
 };
 
 #endif // SIGNATURE_H

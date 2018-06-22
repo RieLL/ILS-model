@@ -9,22 +9,22 @@ Variables::Variables()
     //
 }
 
-QColor Variables::getColorGrid() const
+QColor& Variables::getColorGrid()
 {
-    return colorGrid;
+    return { colorGrid };
 }
 
-QColor Variables::getColorAxis() const
+QColor& Variables::getColorAxis()
 {
-    return colorAxis;
+    return { colorAxis };
 }
 
-QColor Variables::getColorFunction() const
+QColor& Variables::getColorFunction()
 {
-    return colorFunction;
+    return { colorFunction };
 }
 
-QColor Variables::getColorInvelope() const
+QColor& Variables::getColorInvelope()
 {
-    return colorInvelope;
+    return { colorInvelope };
 }

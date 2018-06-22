@@ -1,11 +1,11 @@
 #include "plot.h"
 
-Plot::Plot(const QColor color) 
-    : Window()
-    , Scale()
-    , MainParameters()
-    , Hairstroke()
-    , color(color)
+Plot::Plot(const QColor& color)
+    : Window ()
+    , Scale ()
+    , MainParameters ()
+    , Hairstroke ()
+    , color { color }
 {
     //
 }
@@ -22,5 +22,5 @@ void Plot::setPlot(const QVector<QPointF>& plotPoints)
 
 void Plot::setSignature(const QVector<QString>& str)
 {
-    this->str = str;
+    this->str = { str };
 }

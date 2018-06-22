@@ -5,11 +5,9 @@
 #include <QVector>
 #include <QPointF>
 
-#include "image/image.h"
-#include "plot/plotmanager.h"
-
-#include "data.h"
-#include "function/function.h"
+class Image;
+class Function;
+class PlotManager;
 
 namespace Ui
 {
@@ -41,7 +39,7 @@ private:
     Image* grmScheme;
     Image* kursMpScheme;
 
-    Function *function;
+    Function* function;
 
     qreal f90;
     qreal f150;

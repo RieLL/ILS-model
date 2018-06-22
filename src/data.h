@@ -1,23 +1,32 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include <QFile>
-#include <QVector>
+#include <stdint.h>
+#include <QString>
 
 class DataImpl;
+
+struct SData
+{
+    uint32_t idPlot;
+    uint32_t idFreq;
+    uint32_t cLineH;
+    uint32_t cLineV;
+    uint32_t invelope;
+    uint32_t idAxis;
+    QString  namePlot;
+};
 
 class Data
 {
 public:
-    Data(QString fileName);
+    explicit Data(QString& fileName);
     virtual ~Data();
 
-    QString readData(const int line, const int column) const;
-    int line() const;
-    int column() const;
+    QList<SData>* getData() const;
 
 private:
-    DataImpl *dataImpl;
+    DataImpl* m_pDataImpl;
 };
 
 #endif // DATA_H
