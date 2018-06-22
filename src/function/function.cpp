@@ -1,9 +1,9 @@
 #include "function.h"
 
 Function::Function(qreal min, qreal step, qreal max)
-    : min  (min)
-    , step (step)
-    , max  (max)
+    : min  { min }
+    , step { step }
+    , max  { max }
 {
     //
 }
@@ -20,14 +20,12 @@ QVector<QPointF> Function::functionCos_1(
         qreal amplitude)
 {
     QVector<QPointF> points;
-    points.clear();
-    qreal y = 0;
 
-    for(qreal x = min; x < max; x += step)
+    for(qreal x = { min }; x < max; x += step)
     {
-        y = amplitude * (biasY + m * qCos(f * x));
+        qreal y = { amplitude * (biasY + m * qCos(f * x)) };
 
-        points.append(QPointF(x, y));
+        points.append( QPointF(x, y) );
     }
 
     return points;
@@ -42,14 +40,11 @@ QVector<QPointF> Function::functionCos_2(
         qreal amplitude)
 {
     QVector<QPointF> points;
-    points.clear();
 
-    qreal y = 0;
-
-    for(qreal x = min; x < max; x += step)
+    for(qreal x = { min }; x < max; x += step)
     {
-        y = amplitude * (biasY +  m90 * qCos(f90 * x) + m150 * qCos(f150 * x));
-        points.append(QPointF(x, y));
+        qreal y = { amplitude * (biasY +  m90 * qCos(f90 * x) + m150 * qCos(f150 * x)) };
+        points.append( QPointF(x, y) );
     }
 
     return points;
@@ -64,14 +59,11 @@ QVector<QPointF> Function::functionCos_3(
         qreal amplitude)
 {
     QVector<QPointF> points;
-    points.clear();
-
-    qreal y = 0;
 
     for(qreal x = min; x < max; x += step)
     {
-        y = amplitude * (qCos(f * x) + (m90 * qCos(f90 * x) + m150 * qCos(f150 * x)) * qCos(f * x));
-        points.append(QPointF(x, y));
+        qreal y = { amplitude * (qCos(f * x) + (m90 * qCos(f90 * x) + m150 * qCos(f150 * x)) * qCos(f * x)) };
+        points.append( QPointF(x, y) );
     }
 
     return points;
