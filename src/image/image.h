@@ -12,7 +12,7 @@ class Image : public QWidget
 public:
     explicit Image(QString image, QWidget *parent = 0, int readFlag = 0);
     virtual ~Image();
-    void lineConsider(int bank, int pitch);
+    void drawCrossHair(int bank, int pitch);
 
 private:
     const QImage img;
@@ -26,8 +26,8 @@ private:
 
     void consider();
 
-    void paintEvent(QPaintEvent* event) override;
-    void resizeEvent(QResizeEvent* event) override;
+    void paintEvent(QPaintEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
 };

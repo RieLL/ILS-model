@@ -318,7 +318,7 @@ void MainWindow::updateScene_2(const QVector<PlotManager*>& plotScene)
     int id = { 0 };
     int invelopeFlag = { 0 };
 
-    kursMpScheme->lineConsider(bank, pitch);
+    kursMpScheme->drawCrossHair(bank, pitch);
 
     for (PlotManager* pm : plotScene)
     {        
