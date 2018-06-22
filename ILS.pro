@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = ILS
 TEMPLATE = app
 
-DEFINES += QT_DEPRECATED_WARNINGS
+#DEFINES += QT_DEPRECATED_WARNINGS
 
 #QMAKE_LFLAGS += "-s -static-libgcc -static-libstdc++ -static"
 #QMAKE_CXXFLAGS += "-std=c++11 -std=gnu++11 -s -static-libgcc -static-libstdc++ -static"
