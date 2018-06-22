@@ -9,10 +9,10 @@
 class Signature : public Window, public MainParameters
 {
 public:
-    Signature();
+    explicit Signature();
     virtual ~Signature();
 
-    void drawElement(QPainter* painter);
+    void drawElement(QPainter* painter) override;
     void setText(const QString str);
 
 private:

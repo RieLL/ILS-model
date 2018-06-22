@@ -1,7 +1,5 @@
 #include "data.h"
 
-
-
 class DataImpl
 {
 public:
@@ -14,12 +12,9 @@ public:
     int column;
 };
 
-
-
-//BEGIN class DataImpl
-DataImpl::DataImpl() :
-    line(0),
-    column(0)
+DataImpl::DataImpl()
+    : line {0}
+    , column {0}
 {
     //
 }
@@ -28,8 +23,6 @@ DataImpl::~DataImpl()
 {
     fileArray.clear();
 }
-
-
 
 void DataImpl::fOpen(QString fileName)
 {
@@ -42,8 +35,8 @@ void DataImpl::fOpen(QString fileName)
     file->close();
     delete file;
 
-    line   =  (fileRead.split('\n')).length();
-    column = ((fileRead.split('@')). length() / line) + 1;
+    line = fileRead.split('\n').length();
+    column = (fileRead.split('@').length() / line) + 1;
 
     QList<QByteArray> arrayLine;
     arrayLine.append(fileRead.split('\n'));
@@ -59,25 +52,19 @@ void DataImpl::fOpen(QString fileName)
         }
     }
 }
-//END class DataImpl
 
 
 
-//BEGIN class Data
-Data::Data(QString fileName) :
-    dataImpl(new DataImpl)
+Data::Data(QString fileName)
+    : dataImpl {new DataImpl}
 {
     dataImpl->fOpen(fileName);
 }
-
-
 
 Data::~Data()
 {
     delete dataImpl;
 }
-
-
 
 QString Data::readData(const int line, const int column) const
 {
@@ -85,17 +72,12 @@ QString Data::readData(const int line, const int column) const
     return(dataImpl->fileArray.value(element));
 }
 
-
-
 int Data::line() const
 {
     return dataImpl->line;
 }
 
-
-
 int Data::column() const
 {
     return dataImpl->column;
 }
-//END class Data

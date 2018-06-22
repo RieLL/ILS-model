@@ -2,29 +2,28 @@
 #include <QByteArray>
 #include <QDebug>
 
+PlotManager::PlotManager(QWidget* parent)
+    : QWidget(parent)
+    , countHLines(0)
+    , countVLines(0)
 
+    , idPlot(0)
+    , idFreq(0)
+    , invelopeFlag(0)
+    , idAxis(0)
 
-PlotManager::PlotManager(QWidget* parent) : QWidget(parent),
-    countHLines(0),
-    countVLines(0),
+    , marginTop(0)
+    , marginButtom(0)
+    , marginLeft(0)
+    , marginRight(0)
 
-    idPlot(0),
-    idFreq(0),
-    invelopeFlag(0),
-    idAxis(0),
+    , axisX(nullptr)
+    , axisY(nullptr)
+    , grid(nullptr)
+    , signature(nullptr)
 
-    marginTop(0),
-    marginButtom(0),
-    marginLeft(0),
-    marginRight(0),
-
-    axisX(nullptr),
-    axisY(nullptr),
-    grid(nullptr),
-    signature(nullptr),
-
-    colorFunction(48, 165, 255, 255),
-    colorInvelope(255, 114, 243, 255)
+    , colorFunction(48, 165, 255, 255)
+    , colorInvelope(255, 114, 243, 255)
 {
     //
 }
@@ -43,8 +42,6 @@ PlotManager::~PlotManager()
 
     plots.erase(plots.begin(), plots.end());
 }
-
-
 
 void PlotManager::setId(const int id)
 {
@@ -75,8 +72,6 @@ int  PlotManager::getInvelopeFlag() const
 {
     return this->invelopeFlag;
 }
-
-
 
 void PlotManager::addAxis(const Axis::PlotAxis axis)
 {
@@ -205,8 +200,6 @@ void PlotManager::setSpectrum(const QVector<QPointF>& spectrumPoints, const QVec
     repaint();
 }
 
-
-
 void PlotManager::setMargin(const int left, const int right, const int top, const int buttom)
 {
     this->marginLeft   = left;
@@ -221,8 +214,6 @@ void PlotManager::setCountLines(const int countHLines, const int countVLines)
     this->countHLines = countHLines;
     this->countVLines = countVLines;
 }
-
-
 
 void PlotManager::paintEvent(QPaintEvent*)
 {
@@ -247,8 +238,6 @@ void PlotManager::resizeEvent(QResizeEvent* event)
 
     consider();
 }
-
-
 
 void PlotManager::consider()
 {
@@ -286,8 +275,6 @@ void PlotManager::consider()
         smallSignatureSize = marginTop;
     }
 
-
-
     // consider scale
     if (width() > 0)
     {
@@ -319,8 +306,6 @@ void PlotManager::consider()
         }
     }
 
-
-
     if (axisX)
     {
         x = smallAxisSizeY + margin + marginLeft;
@@ -346,8 +331,6 @@ void PlotManager::consider()
         axisY->setSize(w, h);
         axisY->setScaleY(scaleY);
     }
-
-
 
     if (grid)
     {

@@ -1,10 +1,12 @@
 #include "axis.h"
 #include <QTextCodec>
 
-
-Axis::Axis() : Window(), Scale(), Hairstroke(),
-    axis(Off),
-    var(new Variables)
+Axis::Axis() 
+    : Window()
+    , Scale()
+    , Hairstroke()
+    , axis(Off)
+    , var(new Variables)
 {
     //
 }
@@ -14,8 +16,6 @@ Axis::~Axis()
     delete var;
 }
 
-
-
 void Axis::drawElement(QPainter* painter)
 {
     painter->setPen(QPen(var->getColorAxis(), 1, Qt::SolidLine));
@@ -24,8 +24,6 @@ void Axis::drawElement(QPainter* painter)
     {
         axisButtom(painter);
         drawSignature(painter);
-
-
 
         QTextCodec* codec = QTextCodec::codecForName("Windows-1251");
 
@@ -63,15 +61,11 @@ void Axis::drawElement(QPainter* painter)
 
         painter->setFont(font);
 
-        //painter->drawRect(rect);
-
         painter->drawText(rect, Qt::AlignRight, codec->toUnicode(QString("ÌÃö").toLatin1()));
     }
 
     if (axis == Y) { axisLeft(painter); }
 }
-
-
 
 void Axis::setAxis(PlotAxis axis)
 {
@@ -83,8 +77,6 @@ void Axis::setSignatureAxis(const QVector<qreal>& point, const QVector<QString>&
     this->point = point;
     this->str = str;
 }
-
-
 
 void Axis::axisButtom(QPainter* painter)
 {

@@ -2,8 +2,8 @@
 
 
 
-Spectrum::Spectrum(const QColor color) :
-    Plot(color)
+Spectrum::Spectrum(const QColor color)
+    : Plot(color)
 {
     //
 }
@@ -12,8 +12,6 @@ Spectrum::~Spectrum()
 {
     //
 }
-
-
 
 void Spectrum::drawElement(QPainter* painter)
 {
@@ -65,8 +63,6 @@ void Spectrum::drawElement(QPainter* painter)
 
         painter->setPen(QPen(QColor(0, 0, 0, 255), 1, Qt::SolidLine));
         painter->setFont(font);
-
-//        painter->drawRect(rect);
 
         painter->drawText(rect, Qt::AlignCenter, codec->toUnicode(str.at(i).toLatin1()));
     }

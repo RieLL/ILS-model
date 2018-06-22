@@ -16,7 +16,7 @@ class Axis : public Window, public Scale, public Hairstroke
 public:
     typedef enum {Off, X, Y, All} PlotAxis;
 
-    Axis();
+    explicit Axis();
     virtual ~Axis();
 
     virtual void drawElement(QPainter* painter);

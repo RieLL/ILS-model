@@ -2,8 +2,6 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-
-
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
     ui(new Ui::MainWindow),
 
@@ -61,8 +59,6 @@ MainWindow::~MainWindow()
     deleteScene(kursMpGrmScene);
 }
 
-
-
 void MainWindow::init()
 {
     ui->bankLabel->setNum(0);
@@ -85,8 +81,6 @@ void MainWindow::connectSlots()
     connect(ui->doubleSpinBox_2, SIGNAL(valueChanged(double)), this, SLOT(setFreqGrm(double)));
 }
 
-
-
 void MainWindow::createScene(QLayout* layout, QVector<PlotManager*>& plotScene,
                              QString dataFile, QWidget* parent)
 {
@@ -108,7 +102,7 @@ void MainWindow::createScene(QLayout* layout, QVector<PlotManager*>& plotScene,
         cLineV   = data.readData(i, 3).toInt();   // Количество линий по вертикали
         invelope = data.readData(i, 4).toInt();   // Добавить огибающую
         idAxis   = data.readData(i, 5).toInt();   // Добавить ось
-        namePlot = data.readData(i, 6).toAscii(); // Имя графика
+        namePlot = data.readData(i, 6); // Имя графика
 
         plotScene.append(new PlotManager(parent));
 
@@ -451,8 +445,6 @@ void MainWindow::updateScene_2(const QVector<PlotManager*>& plotScene)
     }
 }
 
-
-
 void MainWindow::deleteScene(QVector<PlotManager*>& plotScene)
 {
     for (PlotManager* pm : plotScene)
@@ -462,8 +454,6 @@ void MainWindow::deleteScene(QVector<PlotManager*>& plotScene)
 
     plotScene.erase(plotScene.begin(), plotScene.end());
 }
-
-
 
 // public slots
 void MainWindow::setFreqKrm(double freqKrm)

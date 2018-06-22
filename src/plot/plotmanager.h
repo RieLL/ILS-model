@@ -1,12 +1,6 @@
 #ifndef PLOTMANAGER_H
 #define PLOTMANAGER_H
 
-#include <QWidget>
-#include <QPainter>
-#include <QVector>
-#include <QPointF>
-#include <QColor>
-
 #include "plot/axis.h"
 #include "plot/grid.h"
 #include "plot/signature.h"
@@ -15,14 +9,18 @@
 #include "plot/plotTypes/dots.h"
 #include "plot/plotTypes/spectrum.h"
 
-
+#include <QWidget>
+#include <QPainter>
+#include <QVector>
+#include <QPointF>
+#include <QColor>
 
 class PlotManager : public QWidget
 {
     Q_OBJECT
 
 public:
-    PlotManager(QWidget* parent = 0);
+    explicit PlotManager(QWidget* parent = 0);
     virtual ~PlotManager();
 
     void setId(const int id);
@@ -47,15 +45,9 @@ public:
     void setMargin(const int left, const int right, const int top, const int buttom);
     void setCountLines(const int countHLine, const int countVLine);
 
-//public slots:
-//    void setFreqKrm(double freqKrm);
-//    void setFreqGrm(double freqGrm);
-//    void setPitch(int pitch);
-//    void setBank(int bank);
-
 protected:
-    virtual void paintEvent(QPaintEvent*);
-    virtual void resizeEvent(QResizeEvent* event);
+    virtual void paintEvent(QPaintEvent*) override;
+    virtual void resizeEvent(QResizeEvent* event) override;
 
 private:
     int countHLines;

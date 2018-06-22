@@ -12,12 +12,10 @@
 
 #include "../../function/function.h"
 
-
-
 class Plot : public Window, public Scale, public MainParameters, public Hairstroke
 {
 public:
-    Plot(const QColor color);
+    explicit Plot(const QColor color);
     virtual ~Plot();
 
     void setPlot(const QVector<QPointF>& plotPoints);

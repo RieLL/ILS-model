@@ -10,7 +10,7 @@
 class Grid : public Window, public Scale, public Hairstroke
 {
 public:
-    Grid();
+    explicit Grid();
     virtual ~Grid();
 
     void drawElement(QPainter* painter);

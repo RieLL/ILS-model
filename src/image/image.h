@@ -2,7 +2,6 @@
 #define IMAGE_H
 
 #include <QWidget>
-#include <QPainter>
 #include <QPalette>
 #include <QPointF>
 #include <QMouseEvent>
@@ -11,7 +10,7 @@ class Image : public QWidget
 {
 
 public:
-    Image(QString image, QWidget *parent = 0, int readFlag = 0);
+    explicit Image(QString image, QWidget *parent = 0, int readFlag = 0);
     virtual ~Image();
     void lineConsider(int bank, int pitch);
 
@@ -27,10 +26,10 @@ private:
 
     void consider();
 
-    void paintEvent(QPaintEvent* event);
-    void resizeEvent(QResizeEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
+    void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
 };
 
 #endif // IMAGE_H

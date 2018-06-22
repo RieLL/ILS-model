@@ -1,10 +1,10 @@
 #include "window.h"
 
-Window::Window() :
-    posX(0),
-    posY(0),
-    width(0),
-    height(0)
+Window::Window()
+    : posX(0)
+    , posY(0)
+    , width(0)
+    , height(0)
 {
     //
 }
@@ -14,9 +14,6 @@ Window::~Window()
     //
 }
 
-
-
-// START SETS
 void Window::setPos(const int x, const int y)
 {
     this->posX = x;
@@ -48,11 +45,7 @@ void Window::setHeight(const int height)
 {
     this->height = height;
 }
-// END SETS
 
-
-
-// START GETS
 int Window::getPosX() const
 {
     return this->posX;
@@ -72,4 +65,3 @@ int Window::getHeight() const
 {
     return this->height;
 }
-// END GETS

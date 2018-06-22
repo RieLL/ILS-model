@@ -1,7 +1,10 @@
 #include "grid.h"
 
-Grid::Grid() : Window(), Scale(), Hairstroke(),
-    var(new Variables)
+Grid::Grid()
+    : Window()
+    , Scale()
+    , Hairstroke()
+    , var(new Variables)
 {
     //
 }
@@ -11,14 +14,10 @@ Grid::~Grid()
     delete var;
 }
 
-
-
 void Grid::drawElement(QPainter* painter)
 {
     drawGrid(painter);
 }
-
-
 
 void Grid::drawGrid(QPainter* painter)
 {
@@ -29,8 +28,6 @@ void Grid::drawGrid(QPainter* painter)
     addHGrid(painter);
     addVGrid(painter);
 }
-
-
 
 void Grid::addHGrid(QPainter* painter)
 {

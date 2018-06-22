@@ -11,8 +11,6 @@
 #include "data.h"
 #include "function/function.h"
 
-
-
 namespace Ui
 {
     class MainWindow;

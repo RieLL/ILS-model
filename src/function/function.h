@@ -5,7 +5,6 @@
 #include <QPointF>
 #include <qmath.h>
 
-
 class Function
 {
 public:
