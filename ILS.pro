@@ -14,7 +14,8 @@ TEMPLATE = app
 #DEFINES += QT_DEPRECATED_WARNINGS
 
 #QMAKE_LFLAGS += "-s -static-libgcc -static-libstdc++ -static"
-#QMAKE_CXXFLAGS += "-std=c++11 -std=gnu++11 -s -static-libgcc -static-libstdc++ -static"
+QMAKE_CXXFLAGS += "-std=c++14 -std=gnu++14"
+#-s -static-libgcc -static-libstdc++ -static
 
 SOURCES  +=             \
     src/main.cpp        \
