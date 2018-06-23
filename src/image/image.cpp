@@ -1,9 +1,9 @@
 #include "image.h"
 #include <QPainter>
 
-Image::Image(QString image, QWidget* parent, int readFlag) 
+Image::Image(QString pathToImage, QWidget* parent, int readFlag)
     : QWidget(parent)
-    , img(image)
+    , img(pathToImage)
     , copyImg(img)
     , oldPos(0, 0)
     , x(0)

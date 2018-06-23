@@ -10,7 +10,7 @@ class Image : public QWidget
 {
 
 public:
-    explicit Image(QString image, QWidget *parent = 0, int readFlag = 0);
+    explicit Image(QString pathToImage, QWidget *parent = 0, int readFlag = 0);
     virtual ~Image();
     void drawCrossHair(int bank, int pitch);
 
