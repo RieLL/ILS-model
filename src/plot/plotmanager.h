@@ -47,7 +47,7 @@ public:
 
 protected:
     virtual void paintEvent(QPaintEvent*) override;
-    virtual void resizeEvent(QResizeEvent* event) override;
+    virtual void resizeEvent(QResizeEvent*) override;
 
 private:
     int countHLines;

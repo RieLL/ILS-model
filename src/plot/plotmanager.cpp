@@ -235,7 +235,7 @@ void PlotManager::paintEvent(QPaintEvent*)
     painter.end();
 }
 
-void PlotManager::resizeEvent(QResizeEvent* event)
+void PlotManager::resizeEvent(QResizeEvent*)
 {
     setFixedHeight( 0.5 * (width() - 1) + marginTop + marginButtom );
 
